@@ -1,3 +1,7 @@
+[![CircleCI](https://circleci.com/gh/fartbagxp/certspotter-api.svg?style=svg)](https://circleci.com/gh/fartbagxp/certspotter-api)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![MIT License](https://img.shields.io/github/license/dawnlabs/carbon.svg)](https://github.com/dawnlabs/carbon/blob/master/LICENSE)
+
 # Goal
 
 This is a simple python library for utilizing sslmate's certspotter v1 API.
