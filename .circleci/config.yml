@@ -26,8 +26,7 @@ jobs:
           name: install python dependencies
           command: |
             sudo pip install pipenv
-            pipenv shell
-            pipenv install
+            pipenv sync --dev
       - save_cache:
           key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
           paths:
@@ -37,8 +36,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            pipenv shell
-            python3 -m unittest discover -v
+            pipenv run python -m unittest discover -v
       - store_artifacts:
           path: htmlcov/
   deploy:
@@ -52,7 +50,6 @@ jobs:
           name: install python dependencies
           command: |
             sudo pip install pipenv
-            pipenv shell
             pipenv install
       - save_cache:
           key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
@@ -61,7 +58,6 @@ jobs:
       - run:
           name: verify git tag vs. version
           command: |
-            pipenv shell
             python setup.py verify
       - run:
           name: init .pypirc
@@ -77,5 +73,4 @@ jobs:
       - run:
           name: upload to pypi
           command: |
-            pipenv shell
             twine upload dist/*
