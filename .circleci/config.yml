@@ -20,25 +20,25 @@ jobs:
       - image: circleci/python:3.7.4
     steps:
       - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
       - run:
           name: install python dependencies
           command: |
             sudo pip install pipenv
-            pipenv shell
-            pipenv install
+            pipenv sync --dev
       - save_cache:
           key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
           paths:
             - ".venv"
             - "/usr/local/bin"
-            - "/usr/local/lib/python3.7/site-packages"
+            - "/usr/local/bin/python3.7/site-packages"
       - run:
           name: run tests
           command: |
-            pipenv shell
-            python3 -m unittest discover -v
+            pipenv run python -m unittest discover -v
       - store_artifacts:
           path: htmlcov/
   deploy:
@@ -46,22 +46,24 @@ jobs:
       - image: circleci/python:3.7.4
     steps:
       - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
           key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
       - run:
           name: install python dependencies
           command: |
             sudo pip install pipenv
-            pipenv shell
             pipenv install
       - save_cache:
           key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
           paths:
-            - "venv"
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/bin/python3.7/site-packages"
       - run:
           name: verify git tag vs. version
           command: |
-            pipenv shell
             python setup.py verify
       - run:
           name: init .pypirc
@@ -77,5 +79,4 @@ jobs:
       - run:
           name: upload to pypi
           command: |
-            pipenv shell
             twine upload dist/*
