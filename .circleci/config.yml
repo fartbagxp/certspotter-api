@@ -76,4 +76,4 @@ jobs:
       - run:
           name: upload to pypi
           command: |
-            twine upload dist/*
+            pipenv run twine upload dist/*
