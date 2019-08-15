@@ -7,7 +7,7 @@ import sys
 from setuptools import setup
 from setuptools.command.install import install
 
-VERSION = "1.0.5"
+VERSION = "1.0.6"
 
 
 def readme():
@@ -20,6 +20,7 @@ setup(name='certspotter',
       version=VERSION,
       description='sslmate CertSpotter API',
       long_description=readme(),
+      long_description_content_type="text/markdown",
       url="https://github.com/fartbagxp/certspotter-api",
       author='Boris Ning',
       author_email='fartbagxp@gmail.com',
