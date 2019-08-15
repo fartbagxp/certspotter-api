@@ -7,7 +7,7 @@ import sys
 from setuptools import setup
 from setuptools.command.install import install
 
-VERSION = "1.0.3"
+VERSION = "1.0.4"
 
 
 def readme():
