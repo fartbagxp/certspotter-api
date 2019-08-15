@@ -31,8 +31,6 @@ jobs:
           key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
           paths:
             - ".venv"
-            - "/usr/local/bin"
-            - "/usr/local/lib/python3.7/site-packages"
       - run:
           name: run tests
           command: |
