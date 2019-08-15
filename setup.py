@@ -18,7 +18,7 @@ def readme():
 
 setup(name='certspotter',
       version=VERSION,
-      description='sslmate CertSpotter API'
+      description='sslmate CertSpotter API',
       long_description=readme(),
       url="https://github.com/fartbagxp/certspotter-api"
       author='Boris Ning',
