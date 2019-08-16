@@ -38,9 +38,12 @@ jobs:
       - run:
           name: run tests
           command: |
-            pipenv run python -m unittest discover -v
+            cd src
+            pipenv run coverage run -m unittest src -v
+            pipenv run coverage report
+            pipenv run coverage html
       - store_artifacts:
-          path: htmlcov/
+          path: htmlcov
   deploy:
     docker:
       - image: circleci/python:3.7.4

@@ -8,6 +8,12 @@ This is a simple python library for utilizing sslmate's certspotter v1 API.
 
 ## How to use this library
 
+Installation:
+
+```python
+pip install certspotter
+```
+
 ```python
 from certspotter.api import CertSpotter
 
