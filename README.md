@@ -1,6 +1,7 @@
 [![CircleCI](https://circleci.com/gh/fartbagxp/certspotter-api.svg?style=svg)](https://circleci.com/gh/fartbagxp/certspotter-api)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![MIT License](https://img.shields.io/github/license/dawnlabs/carbon.svg)](https://github.com/dawnlabs/carbon/blob/master/LICENSE)
+[![codecov](https://img.shields.io/codecov/c/github/fartbagxp/certspotter-api?style=flat-square)](https://codecov.io)
 
 # Goal
 
