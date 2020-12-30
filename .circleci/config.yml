@@ -1,83 +1,21 @@
 version: 2.1
-workflows:
-  build_and_deploy:
-    jobs:
-      - build:
-          filters:
-            tags:
-              only: /.*/
-      - deploy:
-          requires:
-            - build
-          filters:
-            tags:
-              only: /[0-9]+(\.[0-9]+)*/
-            branches:
-              ignore: /.*/
+
+orbs:
+  python: circleci/python@0.2.1
+
 jobs:
-  build:
-    docker:
-      - image: circleci/python:3.7.9
+  build-and-test:
+    executor: python/default
     steps:
       - checkout
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
-      - restore_cache:
-          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
+      - python/load-cache
+      - python/install-deps
+      - python/save-cache
       - run:
-          name: install python dependencies
-          command: |
-            sudo pip install pipenv
-            pipenv sync --dev
-      - save_cache:
-          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
-          paths:
-            - '.venv'
-            - '/usr/local/bin'
-            - '/usr/local/bin/python3.7/site-packages'
-      - run:
-          name: run tests
-          command: |
-            cd src
-            pipenv run coverage run -m unittest discover -v
-            pipenv run coverage report
-            pipenv run coverage xml
-            pipenv run codecov
-      - store_artifacts:
-          path: htmlcov
-  deploy:
-    docker:
-      - image: circleci/python:3.7.9
-    steps:
-      - checkout
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
-      - restore_cache:
-          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
-      - run:
-          name: install python dependencies
-          command: |
-            sudo pip install pipenv
-            pipenv install
-            pipenv install twine
-      - save_cache:
-          key: v1-dependency-cache-{{ checksum "setup.py" }}-{{ checksum "Pipfile.lock" }}
-          paths:
-            - '.venv'
-            - '/usr/local/bin'
-            - '/usr/local/bin/python3.7/site-packages'
-      - run:
-          name: init .pypirc
-          command: |
-            echo -e "[pypi]" >> ~/.pypirc
-            echo -e "username = $PYPI_USERNAME" >> ~/.pypirc
-            echo -e "password = $PYPI_PASSWORD" >> ~/.pypirc
-      - run:
-          name: create packages
-          command: |
-            python setup.py sdist
-            python setup.py bdist_wheel
-      - run:
-          name: upload to pypi
-          command: |
-            pipenv run twine upload dist/*
+          command: ./manage.py test
+          name: Test
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
