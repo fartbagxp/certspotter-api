@@ -22,11 +22,11 @@ class CertSpotter:
       url = "https://api.certspotter.com/v1/issuances"
       headers = {'Authorization': 'Bearer ' + self.token}
       response = requests.get(url, headers=headers, params=payload)
+      if response.status_code == 429 and 'Retry-After' in response.headers:
+        return [], response.headers['Retry-After']
       if response.status_code != 200 or response.json() is None:
         print(f'HTTP error occurred: status code was {response.status_code}.')
         return [], 0
-      if len(response.json()) == 0 and 'Retry-After' in response.headers:
-        return [], response.headers['Retry-After']
       return response.json(), 0
     except HTTPError as http_err:
       print(f'HTTP error occurred: {http_err}')
