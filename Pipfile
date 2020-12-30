@@ -10,7 +10,7 @@ coverage = "*"
 codecov = "*"
 
 [packages]
-requests = "==2.22.0"
+requests = "==2.25.1"
 
 [requires]
 python_version = "3.7"
